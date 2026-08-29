@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GDG Al-Azhar | Find Someone Who...</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #4285F4;
+            --red: #EA4335;
+            --yellow: #FBBC05;
+            --green: #34A853;
+            --dark: #202124;
+            --gray: #5f6368;
+            --light: #f8f9fa;
+            --border: #dadce0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           LANDING PAGE
+        ========================= */
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        #startScreen {
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0.12;
+        }
+
+        .blob.blue {
+            width: 400px;
+            height: 400px;
+            background: var(--blue);
+            top: -150px;
+            left: -100px;
+        }
+
+        .blob.red {
+            width: 300px;
+            height: 300px;
+            background: var(--red);
+            bottom: -100px;
+            right: -80px;
+        }
+
+        .blob.yellow {
+            width: 180px;
+            height: 180px;
+            background: var(--yellow);
+            top: 20%;
+            right: 10%;
+        }
+
+        .start-card {
+            position: relative;
+            z-index: 2;
+            width: min(850px, 100%);
+            text-align: center;
+            padding: 55px 40px;
+        }
+
+        .logo {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 25px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            background: #fff;
+            border: 3px solid var(--dark);
+            box-shadow: 7px 7px 0 var(--dark);
+        }
+
+        .logo span:nth-child(1) {
+            color: var(--blue);
+        }
+
+        .logo span:nth-child(2) {
+            color: var(--red);
+        }
+
+        .logo span:nth-child(3) {
+            color: var(--yellow);
+        }
+
+        .logo span:nth-child(4) {
+            color: var(--green);
+        }
+
+        .organizer {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .start-card h1 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: clamp(45px, 7vw, 80px);
+            line-height: 0.95;
+            margin-bottom: 25px;
+        }
+
+        .start-card h1 .blue {
+            color: var(--blue);
+        }
+
+        .start-card h1 .red {
+            color: var(--red);
+        }
+
+        .start-card h1 .yellow {
+            color: var(--yellow);
+        }
+
+        .start-card h1 .green {
+            color: var(--green);
+        }
+
+        .intro {
+            max-width: 650px;
+            margin: auto;
+            color: var(--gray);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .intro strong {
+            color: var(--dark);
+        }
+
+        .start-btn {
+            margin-top: 35px;
+            border: none;
+            background: var(--dark);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 0 #000;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #000;
+        }
+
+        .start-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #000;
+        }
+
+        .rules {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 35px;
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        /* =========================
+           GAME SCREEN
+        ========================= */
+
+        #gameScreen {
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+        }
+
+        .mini-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 2px solid var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        .mini-logo span:nth-child(1) { color: var(--blue); }
+        .mini-logo span:nth-child(2) { color: var(--red); }
+        .mini-logo span:nth-child(3) { color: var(--yellow); }
+        .mini-logo span:nth-child(4) { color: var(--green); }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat {
+            background: var(--light);
+            border: 1px solid var(--border);
+            padding: 9px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .timer {
+            color: var(--red);
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .game-container {
+            width: min(1200px, 100%);
+            margin: auto;
+            padding: 35px 25px 50px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-header h2 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .game-header p {
+            color: var(--gray);
+        }
+
+        .progress-wrapper {
+            width: min(600px, 100%);
+            margin: 20px auto 0;
+        }
+
+        .progress-bar {
+            height: 9px;
+            background: #e8eaed;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--green);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* =========================
+           CHALLENGE GRID
+        ========================= */
+
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .challenge {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            min-height: 190px;
+            position: relative;
+            transition: 0.25s;
+        }
+
+        .challenge:hover {
+            transform: translateY(-3px);
+            border-color: #9aa0a6;
+        }
+
+        .challenge.completed {
+            border-color: var(--green);
+            background: #f1f8f4;
+        }
+
+        .challenge-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .challenge.completed .challenge-number {
+            background: var(--green);
+        }
+
+        .challenge p {
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .name-input {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            outline: none;
+            padding: 10px 2px;
+            font-size: 14px;
+            background: transparent;
+            transition: 0.2s;
+        }
+
+        .name-input:focus {
+            border-color: var(--blue);
+        }
+
+        .check-btn {
+            margin-top: 12px;
+            width: 100%;
+            padding: 9px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .check-btn:hover {
+            background: var(--light);
+        }
+
+        .challenge.completed .check-btn {
+            background: var(--green);
+            color: white;
+            border-color: var(--green);
+        }
+
+        /* =========================
+           RESULTS
+        ========================= */
+
+        #resultScreen {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            background: #fff;
+        }
+
+        .result-card {
+            width: min(700px, 100%);
+        }
+
+        .celebration {
+            font-size: 70px;
+            margin-bottom: 15px;
+        }
+
+        .result-card h1 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .result-card > p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .final-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .final-stat {
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .final-stat .number {
+            font-size: 38px;
+            font-weight: 800;
+        }
+
+        .final-stat .label {
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .restart-btn {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+            .challenge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 12px 15px;
+            }
+
+            .brand-text {
+                display: none;
+            }
+
+            .stats {
+                gap: 5px;
+            }
+
+            .stat {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .challenge-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-container {
+                padding: 25px 15px 40px;
+            }
+
+            .start-card {
+                padding: 30px 15px;
+            }
+
+            .final-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ==========================================
+     START SCREEN
+=========================================== -->
+
+<section id="startScreen" class="screen active">
+
+    <div class="blob blue"></div>
+    <div class="blob red"></div>
+    <div class="blob yellow"></div>
+
+    <div class="start-card">
+
+        <!-- Replace this with the actual GDG logo if you have it -->
+        <div class="logo">
+            <span>G</span>
+            <span>D</span>
+            <span>G</span>
+            <span>⚡</span>
+        </div>
+
+        <div class="organizer">
+            GDG ON CAMPUS AL-AZHAR
+        </div>
+
+        <h1>
+            FIND <span class="blue">SOMEONE</span><br>
+            <span class="red">WHO...</span>
+        </h1>
+
+        <p class="intro">
+            Welcome to our <strong>Closing Networking Activity!</strong> 🎉
+            <br><br>
+            Your mission is simple:
+            <strong>meet people, discover fun facts, and complete all 12 challenges.</strong>
+            <br>
+            You have to find someone who matches each statement,
+            write their name, and check it off.
+        </p>
+
+        <button class="start-btn" onclick="startGame()">
+            START THE GAME →
+        </button>
+
+        <div class="rules">
+            <span>👥 Meet new people</span>
+            <span>⏱️ Beat the clock</span>
+            <span>🎯 Complete all 12</span>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ==========================================
+     GAME SCREEN
+=========================================== -->
+
+<section id="gameScreen" class="screen">
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="mini-logo">
+                <span>G</span>
+                <span>D</span>
+                <span>G</span>
+                <span>⚡</span>
+            </div>
+
+            <div class="brand-text">
+                GDG On Campus Al-Azhar
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                🎯 <span id="score">0</span>/12
+            </div>
+
+            <div class="stat timer">
+                ⏱️ <span id="timer">00:00</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="game-container">
+
+        <div class="game-header">
+
+            <h2>Find Someone Who... 👀</h2>
+
+            <p>
+                Talk to people, find your matches & fill them in!
+            </p>
+
+            <div class="progress-wrapper">
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="progress-text">
+                    <span id="progressText">0</span> of 12 completed
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="challenge-grid" id="challengeGrid"></div>
+
+    </main>
+
+</section>
+
+
+<!-- ==========================================
+     RESULT SCREEN
+=========================================== -->
+
+<section id="resultScreen" class="screen">
+
+    <div class="result-card">
+
+        <div class="celebration">
+            🎉
+        </div>
+
+        <h1>YOU DID IT!</h1>
+
+        <p>
+            You completed the GDG Closing Networking Challenge!
+            <br>
+            How many new people did you meet? 👀
+        </p>
+
+        <div class="final-stats">
+
+            <div class="final-stat">
+                <div class="number" id="finalScore">
+                    12/12
+                </div>
+                <div class="label">
+                    Challenges Completed
+                </div>
+            </div>
+
+            <div class="final-stat">
+                <div class="number" id="finalTime">
+                    00:00
+                </div>
+                <div class="label">
+                    Your Time
+                </div>
+            </div>
+
+        </div>
+
+        <button class="restart-btn" onclick="restartGame()">
+            PLAY AGAIN ↻
+        </button>
+
+    </div>
+
+</section>
+
+
+<script>
+
+    /* ==========================================
+       CHALLENGES
+    =========================================== */
+
+    const challenges = [
+        "Someone who uses Linux 🐧",
+
+        "Someone who has more than one programming language on GitHub 👀",
+
+        "Someone from Marketing or Media 📸",
+
+        "Someone wearing blue 🔵",
+
+        "Someone who loves Macaroni Bechamel 🍝",
+
+        "Someone wearing glasses 🤓",
+
+        "Someone whose name starts with M",
+
+        "Someone who has built a website before 💻",
+
+        "Someone who prefers tea over coffee 🍵",
+
+        "Someone from the Board 👑",
+
+        "Someone who knows how to swim 🏊",
+
+        "Someone with more than 1,000 followers on any platform 📱"
+    ];
+
+
+    /* ==========================================
+       GAME VARIABLES
+    =========================================== */
+
+    let score = 0;
+
+    let seconds = 0;
+
+    let timerInterval = null;
+
+    let gameStarted = false;
+
+
+    /* ==========================================
+       START GAME
+    =========================================== */
+
+    function startGame() {
+
+        document
+            .getElementById("startScreen")
+            .classList.remove("active");
+
+        document
+            .getElementById("gameScreen")
+            .classList.add("active");
+
+        score = 0;
+        seconds = 0;
+        gameStarted = true;
+
+        updateScore();
+
+        renderChallenges();
+
+        startTimer();
+    }
+
+
+    /* ==========================================
+       RENDER CHALLENGES
+    =========================================== */
+
+    function renderChallenges() {
+
+        const grid = document.getElementById("challengeGrid");
+
+        grid.innerHTML = "";
+
+        challenges.forEach((challenge, index) => {
+
+            const card = document.createElement("div");
+
+            card.className = "challenge";
+
+            card.id = `challenge-${index}`;
+
+            card.innerHTML = `
+
+                <div class="challenge-number">
+                    ${index + 1}
+                </div>
+
+                <p>
+                    ${challenge}
+                </p>
+
+                <input
+                    type="text"
+                    class="name-input"
+                    id="input-${index}"
+                    placeholder="Enter their name..."
+                    autocomplete="off"
+                >
+
+                <button
+                    class="check-btn"
+                    id="btn-${index}"
+                    onclick="completeChallenge(${index})"
+                >
+                    ✓ Mark Complete
+                </button>
+
+            `;
+
+            grid.appendChild(card);
+
+        });
+
+    }
+
+
+    /* ==========================================
+       COMPLETE CHALLENGE
+    =========================================== */
+
+    function completeChallenge(index) {
+
+        const card = document.getElementById(`challenge-${index}`);
+
+        const input = document.getElementById(`input-${index}`);
+
+        const button = document.getElementById(`btn-${index}`);
+
+
+        if (card.classList.contains("completed")) {
+
+            card.classList.remove("completed");
+
+            button.innerText = "✓ Mark Complete";
+
+            score--;
+
+        } else {
+
+            if (input.value.trim() === "") {
+
+                input.focus();
+
+                input.style.borderColor = "#EA4335";
+
+                setTimeout(() => {
+                    input.style.borderColor = "";
+                }, 1000);
+
+                return;
+            }
+
+
+            card.classList.add("completed");
+
+            button.innerText = "✓ Completed!";
+
+            score++;
+
+        }
+
+
+        updateScore();
+
+        checkGameFinished();
+
+    }
+
+
+    /* ==========================================
+       UPDATE SCORE
+    =========================================== */
+
+    function updateScore() {
+
+        document.getElementById("score").innerText = score;
+
+        document.getElementById("progressText").innerText = score;
+
+        const percentage = (score / challenges.length) * 100;
+
+        document.getElementById("progressFill").style.width =
+            `${percentage}%`;
+
+    }
+
+
+    /* ==========================================
+       TIMER
+    =========================================== */
+
+    function startTimer() {
+
+        clearInterval(timerInterval);
+
+        timerInterval = setInterval(() => {
+
+            seconds++;
+
+            updateTimer();
+
+        }, 1000);
+
+    }
+
+
+    function updateTimer() {
+
+        const minutes = Math.floor(seconds / 60);
+
+        const remainingSeconds = seconds % 60;
+
+        const formattedMinutes =
+            String(minutes).padStart(2, "0");
+
+        const formattedSeconds =
+            String(remainingSeconds).padStart(2, "0");
+
+        document.getElementById("timer").innerText =
+            `${formattedMinutes}:${formattedSeconds}`;
+
+    }
+
+
+    /* ==========================================
+       CHECK IF FINISHED
+    =========================================== */
+
+    function checkGameFinished() {
+
+        if (score !== challenges.length) {
+            return;
+        }
+
+
+        clearInterval(timerInterval);
+
+        gameStarted = false;
+
+        playSuccessSound();
+
+
+        setTimeout(() => {
+
+            document
+                .getElementById("gameScreen")
+                .classList.remove("active");
+
+            document
+                .getElementById("resultScreen")
+                .classList.add("active");
+
+
+            document.getElementById("finalScore").innerText =
+                `${score}/12`;
+
+            document.getElementById("finalTime").innerText =
+                formatTime(seconds);
+
+        }, 600);
+
+    }
+
+
+    /* ==========================================
+       FORMAT TIME
+    =========================================== */
+
+    function formatTime(totalSeconds) {
+
+        const minutes =
+            Math.floor(totalSeconds / 60);
+
+        const secs =
+            totalSeconds % 60;
+
+        return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+    }
+
+
+    /* ==========================================
+       SUCCESS SOUND
+       Uses Web Audio API — no audio file needed
+    =========================================== */
+
+    function playSuccessSound() {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) return;
+
+        const audioContext = new AudioContext();
+
+        const notes = [
+            523.25,
+            659.25,
+            783.99,
+            1046.50
+        ];
+
+        notes.forEach((frequency, index) => {
+
+            const oscillator =
+                audioContext.createOscillator();
+
+            const gain =
+                audioContext.createGain();
+
+            oscillator.frequency.value = frequency;
+
+            oscillator.type = "sine";
+
+            oscillator.connect(gain);
+
+            gain.connect(audioContext.destination);
+
+            const startTime =
+                audioContext.currentTime + index * 0.13;
+
+            oscillator.start(startTime);
+
+            gain.gain.setValueAtTime(
+                0.15,
+                startTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                startTime + 0.35
+            );
+
+            oscillator.stop(
+                startTime + 0.35
+            );
+
+        });
+
+    }
+
+
+    /* ==========================================
+       RESTART
+    =========================================== */
+
+    function restartGame() {
+
+        clearInterval(timerInterval);
+
+        score = 0;
+
+        seconds = 0;
+
+        document
+            .getElementById("resultScreen")
+            .classList.remove("active");
+
+        document
+            .getElementById("startScreen")
+            .classList.add("active");
+
+        document.getElementById("timer").innerText =
+            "00:00";
+
+    }
+
+
+    /* ==========================================
+       PREVENT ENTER FROM SUBMITTING ANYTHING
+    =========================================== */
+
+    document.addEventListener("keydown", function(event) {
+
+        if (
+            event.key === "Enter" &&
+            event.target.classList.contains("name-input")
+        ) {
+
+            event.preventDefault();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
